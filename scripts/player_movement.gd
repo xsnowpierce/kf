@@ -1,24 +1,33 @@
-extends CharacterBody3D
+extends Node3D
 
+class_name PlayerMovement
 
-@export var SPEED = 3.0
-@export var JUMP_VELOCITY = 4.5
+@export var character3d : CharacterBody3D
+@export var player_input : PlayerInput
+@export var SPEED : float = 4.0
+@export var RUNNING_SPEED : float = 6
+var current_speed : float 
 
-
-func _physics_process(delta: float) -> void:
-	# Add the gravity.
-	if not is_on_floor():
-		velocity += get_gravity() * delta
-
-	# Get the input direction and handle the movement/deceleration.
-	# As good practice, you should replace UI actions with custom gameplay actions.
-	var input_dir := Input.get_vector("move_left", "move_right", "move_up", "move_down")
-	var direction := (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
-	if direction:
-		velocity.x = direction.x * SPEED
-		velocity.z = direction.z * SPEED
+func _process(delta: float) -> void:
+	if not character3d.is_on_floor():
+		character3d.velocity += character3d.get_gravity() * delta
+		
+	if(player_input.sprinting):
+		current_speed = RUNNING_SPEED
 	else:
-		velocity.x = move_toward(velocity.x, 0, SPEED)
-		velocity.z = move_toward(velocity.z, 0, SPEED)
+		current_speed = SPEED
+	
+	var direction := (character3d.transform.basis * Vector3(player_input.move_direction.x, 0, player_input.move_direction.y)).normalized()
+	if direction:
+		character3d.velocity.x = direction.x * current_speed
+		character3d.velocity.z = direction.z * current_speed
+	else:
+		character3d.velocity.x = move_toward(character3d.velocity.x, 0, current_speed)
+		character3d.velocity.z = move_toward(character3d.velocity.z, 0, current_speed)
 
-	move_and_slide()
+	character3d.move_and_slide()
+
+func get_velocity_magnitude() -> float:
+	var horiz_velocity = character3d.velocity
+	horiz_velocity.y = 0
+	return horiz_velocity.length()

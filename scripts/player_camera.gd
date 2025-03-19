@@ -9,8 +9,12 @@ extends Camera3D
 #Head node.
 @export var head : Node3D
 
+@export var player_movement : PlayerMovement
+
 #Settings.
 @export_group("Settings")
+
+@export var head_bob_speed : float = 1
 
 #Mouse settings.
 @export_subgroup("Mouse settings")
@@ -27,8 +31,14 @@ extends Camera3D
 #min pitch in degrees.
 @export var min_pitch : float = -89
 
+
+
 func _ready():
+	$AnimationPlayer.play("head_bob")
 	Input.set_use_accumulated_input(false)
+
+func _process(delta: float) -> void:
+	$AnimationPlayer.speed_scale = player_movement.get_velocity_magnitude() * head_bob_speed
 
 func _unhandled_input(event)->void:
 	if Input.mouse_mode != Input.MOUSE_MODE_CAPTURED:

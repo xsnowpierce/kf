@@ -1,31 +1,97 @@
-[gd_scene load_steps=5 format=3 uid="uid://yha1ke85igq6"]
+[gd_scene load_steps=11 format=3 uid="uid://yha1ke85igq6"]
 
 [ext_resource type="PackedScene" uid="uid://sgh3jjsirapg" path="res://scenes/player.tscn" id="1_ulcgi"]
 [ext_resource type="PackedScene" uid="uid://3nnwbr1d22cj" path="res://scenes/user_interface.tscn" id="2_nxogm"]
+[ext_resource type="PackedScene" uid="uid://bsdhsy1em4jv7" path="res://models/untitled.blend" id="3_4msxo"]
+[ext_resource type="PackedScene" uid="uid://bwuajl820le46" path="res://scenes/item.tscn" id="4_gjmho"]
+[ext_resource type="PackedScene" uid="uid://cc07mdtgubhrv" path="res://scenes/door.tscn" id="5_gjmho"]
+[ext_resource type="PackedScene" uid="uid://dbp1ays7r1a17" path="res://scenes/skeleton.tscn" id="6_t7and"]
+[ext_resource type="PackedScene" uid="uid://d05g3u4m5no07" path="res://models/bat.blend" id="7_ruw3y"]
+[ext_resource type="PackedScene" uid="uid://cmmk7cj6or7i4" path="res://models/spider.blend" id="8_7182s"]
+[ext_resource type="PackedScene" uid="uid://06jqhnc0y6h6" path="res://models/ghost.blend" id="9_tpwpp"]
 
-[sub_resource type="QuadMesh" id="QuadMesh_drvgu"]
-size = Vector2(20, 20)
-orientation = 1
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_ulcgi"]
-size = Vector3(20, 1, 20)
+[sub_resource type="Environment" id="Environment_4msxo"]
+ambient_light_source = 1
+reflected_light_source = 1
+fog_mode = 1
+fog_light_color = Color(0, 0, 0, 1)
+fog_density = 1.0
+fog_depth_begin = 5.0
+fog_depth_end = 10.0
 
 [node name="Scene" type="Node3D"]
 
-[node name="Player" parent="." instance=ExtResource("1_ulcgi")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.364139, 0)
+[node name="Player" parent="." groups=["Player"] instance=ExtResource("1_ulcgi")]
+unique_name_in_owner = true
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -4.55251, -0.19298, -29.5645)
 top_level = true
 
 [node name="UI" parent="." instance=ExtResource("2_nxogm")]
+unique_name_in_owner = true
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-mesh = SubResource("QuadMesh_drvgu")
+[node name="World" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0379798, 0)
 
-[node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D"]
+[node name="WorldEnvironment" type="WorldEnvironment" parent="World"]
+environment = SubResource("Environment_4msxo")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D/StaticBody3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
-shape = SubResource("BoxShape3D_ulcgi")
+[node name="untitled" parent="World" instance=ExtResource("3_4msxo")]
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.677788, 0.735258, 0, -0.735258, 0.677788, 0, 0, 0)
+[node name="Items" type="Node3D" parent="World"]
+
+[node name="Item" parent="World/Items" instance=ExtResource("4_gjmho")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.58226, 0.14825, 7.77332)
+
+[node name="Doors" type="Node3D" parent="World"]
+
+[node name="Door" parent="World/Doors" instance=ExtResource("5_gjmho")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.29365, 3.57628e-07, 5.38158)
+
+[node name="Door2" parent="World/Doors" instance=ExtResource("5_gjmho")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.29365, 3.57628e-07, 0.528611)
+door_locked = true
+
+[node name="Door3" parent="World/Doors" instance=ExtResource("5_gjmho")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.29365, 3.57628e-07, -6.06655)
+door_locked = true
+
+[node name="Door4" parent="World/Doors" instance=ExtResource("5_gjmho")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.29365, 3.57628e-07, -17.7118)
+door_locked = true
+currently_interactable = false
+
+[node name="Door5" parent="World/Doors" instance=ExtResource("5_gjmho")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.29365, 3.57628e-07, -24.3144)
+door_locked = true
+currently_interactable = false
+
+[node name="Door6" parent="World/Doors" instance=ExtResource("5_gjmho")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.29365, 3.57628e-07, -29.1621)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="World"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.85909, 0.5, -29.5219)
+size = Vector3(0.763672, 1, 1.99243)
+
+[node name="OmniLight3D" type="OmniLight3D" parent="World"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.55054, 2.58954, 7.76978)
+light_color = Color(1, 0.909804, 0.745098, 1)
+light_energy = 0.241
+light_specular = 0.0
+light_bake_mode = 1
+omni_range = 4.512
+
+[node name="skeleton" parent="." instance=ExtResource("6_t7and")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 0, -10)
+
+[node name="bat" parent="." instance=ExtResource("7_ruw3y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.47622, 1.62033, -12.6523)
+
+[node name="spider" parent="." instance=ExtResource("8_7182s")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.51881, -0.0366241, -9.85592)
+
+[node name="ghost" parent="." instance=ExtResource("9_tpwpp")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.22987, -0.0379798, -14.7621)
+
+[connection signal="interact_area_hud_hide" from="Player" to="UI" method="hide_interactable_menu"]
+[connection signal="interact_area_hud_show_interactable" from="Player" to="UI" method="show_interactable_item"]
+[connection signal="interact_area_hud_show_text" from="Player" to="UI" method="_on_player_interact_area_hud_show_text"]

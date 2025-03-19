@@ -1,0 +1,32 @@
+[gd_scene load_steps=6 format=3 uid="uid://bwuajl820le46"]
+
+[ext_resource type="Script" uid="uid://lq7t5g14jjlp" path="res://scripts/pickupable_item.gd" id="1_6muww"]
+[ext_resource type="Script" uid="uid://bt4iieetbog4s" path="res://scripts/item.gd" id="2_vljjh"]
+[ext_resource type="Script" uid="uid://b5t80e4kcgisj" path="res://scripts/torch_light.gd" id="3_ro5b8"]
+
+[sub_resource type="Resource" id="Resource_ruw3y"]
+script = ExtResource("2_vljjh")
+_item_type = 0
+_item_name = "Front Door Key"
+_item_description = "hi"
+metadata/_custom_type_script = "uid://bt4iieetbog4s"
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_5fb3c"]
+radius = 1.0
+
+[node name="Item" type="Area3D"]
+collision_layer = 2
+collision_mask = 4
+script = ExtResource("1_6muww")
+_item_held = SubResource("Resource_ruw3y")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
+distance_fade_enabled = true
+distance_fade_begin = 7.0
+distance_fade_length = 1.0
+omni_range = 0.646
+script = ExtResource("3_ro5b8")
+max_distance = 8.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_5fb3c")
